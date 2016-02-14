@@ -1,6 +1,6 @@
 <?php
 /**
- * 商务号绑定接口测试
+ * 商务号解绑接口测试
  * User: chocoboxxf
  * Date: 16/2/13
  * Time: 下午11:44
@@ -9,9 +9,9 @@ namespace chocoboxxf\Teleii\Tests;
 
 use Yii;
 
-class BindMobileTest extends \PHPUnit_Framework_TestCase
+class UnbindMobileTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNoExpireTime()
+    public function testNormal()
     {
         // 请在phpunit.xml.dist中设置平台信息
         $teleii = Yii::createObject([
@@ -21,7 +21,7 @@ class BindMobileTest extends \PHPUnit_Framework_TestCase
             'host' => isset($_ENV['API_HOST']) ? $_ENV['API_HOST'] : '',
             'port' => isset($_ENV['API_PORT']) ? $_ENV['API_PORT'] : '',
         ]);
-        $ret = $teleii->bindMobile('13000000001', '13000000000');
+        $ret = $teleii->unbindMobile('13000000001', '13000000000');
         var_dump($ret);
     }
 

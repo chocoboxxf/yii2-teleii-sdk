@@ -50,6 +50,7 @@ class Teleii extends Component
      * 各接口路径
      */
     const PATH_BIND_MOBILE = '/bindMobile.do'; // 商务号绑定接口
+    const PATH_UNBIND_MOBILE = '/unbindMobile.do'; // 商务号解绑接口
 
     /**
      * 接入商id，由平台方提供
@@ -136,6 +137,41 @@ class Teleii extends Component
             ];
             $response = $this->apiClient->post(
                 self::PATH_BIND_MOBILE,
+                [
+                    'body' => $data
+                ]
+            );
+            $result = $response->json();
+        } catch (\Exception $ex) {
+            $result = [
+                'result' => self::RESULT_ERROR_UNKNOWN,
+                'error' => $ex->getMessage(),
+            ];
+        }
+        return $result;
+    }
+
+    /**
+     * 商务号解绑接口
+     * @param string $bindMobile 实际绑定的号码，如与实际绑定号码不符合，则忽略操作
+     * @param string $virtualMobile 解除绑定的商务号
+     * @return array
+     */
+    public function unbindMobile($bindMobile, $virtualMobile)
+    {
+        $timestamp = $this->getTimestamp();
+        $params = $this->key.$this->id.$timestamp.$virtualMobile;
+        $sign = md5($params);
+        try {
+            $data = [
+                'id' => $this->id,
+                'timestamp' => $timestamp,
+                'virtualMobile' => $virtualMobile,
+                'bindMobile' => $bindMobile,
+                'sign' => $sign,
+            ];
+            $response = $this->apiClient->post(
+                self::PATH_UNBIND_MOBILE,
                 [
                     'body' => $data
                 ]
